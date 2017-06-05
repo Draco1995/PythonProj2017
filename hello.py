@@ -152,7 +152,6 @@ def question5(valeur_propre,vecteur_propre):
     print(vecteur_propre[:3])
 
 def question6(X,valeur_propre,vecteur_propre):
-    A = X.copy()
     x = [[],[],[]]
     for i in range(3):
         x[i].append(np.dot(X,np.transpose(vecteur_propre[i])))
@@ -160,13 +159,30 @@ def question6(X,valeur_propre,vecteur_propre):
     flg = plt.figure()
     ax = flg.gca(projection = "3d")
     ax.scatter(x[0],x[1],x[2])
+    
+def estiCov(X):
+    length = len(X[0])
+    print (length)
+    sigma = np.matrix(np.eye(length))
+    for p in range(length):
+        a = X[:,p]
+        a -= np.mean(a)
+        for q in range(length):
+            b = X[:,q]
+            b -= np.mean(b)
+            print (b)
+            #sigma[p][q] = np.dot(a,np.transpose(b))
+    return sigma
+            
+        
 # main program starts here
 x = read()
 List_matrix = text_to_matrix(x)
 A = np.matrix(List_matrix[0])
 B = np.matrix(List_matrix[1])
 X = question2(A)
-valeur_propre,vecteur_propre = question3(X)
+#valeur_propre,vecteur_propre = question3(X)
 #question4(X,valeur_propre,vecteur_propre)
-question5(valeur_propre,vecteur_propre)
-question6(X,valeur_propre,vecteur_propre)
+#question5(valeur_propre,vecteur_propre)
+#question6(X,valeur_propre,vecteur_propre)
+print(estiCov(X))
