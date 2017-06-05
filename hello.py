@@ -51,21 +51,76 @@ def text_to_matrix(x):
         for j in range(len(y[i])):
             for k in range(len(y[i][j])):
                 y[i][j][k] = float(y[i][j][k])
-    print_matrix(y[0])
-    print_matrix(y[1])
+    return y
 
-def hello():
-    """Print "Hello World" and return None"""
-    print("Hello World")
+def centreGravite(a):
+    l = a[0].copy()
+    for i in a[1:]:
+        l += i
+    return l/len(a)
+
+def repereCentree(a):
+    centre = centreGravite(A)
+    X = A.copy()
+    for i in range(len(A)):
+        for j in range(len(A[0])):    
+            X[i][j] = A[i][j] - centre[j]
+    return X
+
+def repereRenormalisee(a):
+    et = ecartType(a)
+    for i in range(len(A)):
+        a[i] /= et
+    return a
+
+def ecartType(a):
+    b = a.copy()
+    b = np.transpose(a)
+    c = []
+    for i in b:
+        c += [i.std()]
+    return c
+
+def question2(A):
+    X = repereCentree(A)
+    X = repereRenormalisee(X)
+  #  print(centreGravite(X))
+  #  print(ecartType(X))
+    return X
+
+def max_index(a):
+    index = 0
+    max_valeur = a[0]
+    for i in range(len(a)-1):
+        if max_valeur<a[i+1]:
+            max_valeur = a[i+1]
+            index = i+1
+    return index
+        
+
+def inertieDuNuage(X):
+    S = np.transpose(X)*X
+    a,b = np.linalg.eig(S)
+    '''
+    print(a)
+    print()
+    print(b)
+    '''
+    index = max_index(a)
+    return a[index],b[index]
 
 
-"""
-I changed something
-"""
+def question3(X):
+    valeur_propre,vecteur_propre = inertieDuNuage(X)
+    print(valeur_propre)
+    print()
+    print(vecteur_propre)
 
 
 # main program starts here
 x = read()
-text_to_matrix(x)
-x[1].startswith("%")
-x[1][0]
+List_matrix = text_to_matrix(x)
+A = np.matrix(List_matrix[0])
+B = np.matrix(List_matrix[1])
+X = question2(A)
+X = question3(X)
