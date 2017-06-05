@@ -161,8 +161,8 @@ def question6(X,valeur_propre,vecteur_propre):
     ax.scatter(x[0],x[1],x[2])
     
 def estiCov(X):
-    length = len(X[0])
-    print (length)
+    length = X.shape[1]
+    sample = len(X[:,0])
     sigma = np.matrix(np.eye(length))
     for p in range(length):
         a = X[:,p]
@@ -170,8 +170,7 @@ def estiCov(X):
         for q in range(length):
             b = X[:,q]
             b -= np.mean(b)
-            print (b)
-            #sigma[p][q] = np.dot(a,np.transpose(b))
+            sigma[p,q] = np.dot(np.transpose(b),a)[0,0]/sample
     return sigma
             
         
@@ -181,6 +180,7 @@ List_matrix = text_to_matrix(x)
 A = np.matrix(List_matrix[0])
 B = np.matrix(List_matrix[1])
 X = question2(A)
+#print(X)
 #valeur_propre,vecteur_propre = question3(X)
 #question4(X,valeur_propre,vecteur_propre)
 #question5(valeur_propre,vecteur_propre)
