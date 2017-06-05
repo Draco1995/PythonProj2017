@@ -10,8 +10,9 @@ Created on Tue Apr 25 20:12:49 2017
 
 import numpy as np
 import scipy as sp
-import matplotlib as mp
+import matplotlib.pylab as plt
 import sympy as sy
+from mpl_toolkits.mplot3d import Axes3D
 
 def read():
     mon_flux = open("donneesProjetMAP311.txt","r")
@@ -87,7 +88,7 @@ def question2(A):
   #  print(centreGravite(X))
   #  print(ecartType(X))
     return X
-
+'''
 def max_index(a):
     index = 0
     max_valeur = a[0]
@@ -96,7 +97,7 @@ def max_index(a):
             max_valeur = a[i+1]
             index = i+1
     return index
-        
+'''     
 
 def inertieDuNuage(X):
     S = np.transpose(X)*X
@@ -106,21 +107,66 @@ def inertieDuNuage(X):
     print()
     print(b)
     '''
-    index = max_index(a)
-    return a[index],b[index]
+    #index = max_index(a)
+    return a,b
 
 
 def question3(X):
     valeur_propre,vecteur_propre = inertieDuNuage(X)
+    '''
     print(valeur_propre)
     print()
     print(vecteur_propre)
+    '''
+    return valeur_propre,vecteur_propre
 
+def question4(X,valeur_propre,vecteur_propre):
+    A = X.copy()
+    plt.scatter(X[:,2],X[:,3])
+    plt.figure()
+    plt.scatter(X[:,3],X[:,6])
+    plt.figure()
+    plt.scatter(X[:,2],X[:,6])
+    plt.figure()
+    plt.scatter(X[:,1],X[:,6])
+    plt.figure()
+    plt.scatter(X[:,3],X[:,5])
+    plt.figure()
+    plt.scatter(X[:,1],X[:,4])
+    flg = plt.figure()
+    ax = flg.gca(projection = "3d")
+    ax.scatter(X[:,2].tolist(),X[:,3].tolist(),X[:,6].tolist())
+    flg = plt.figure()
+    ax = flg.gca(projection = "3d")
+    ax.scatter(X[:,2].tolist(),X[:,3].tolist(),X[:,1].tolist())
+    flg = plt.figure()
+    ax = flg.gca(projection = "3d")
+    ax.scatter(X[:,4].tolist(),X[:,3].tolist(),X[:,0].tolist())
+    flg = plt.figure()
+    ax = flg.gca(projection = "3d")
+    ax.scatter(X[:,0].tolist(),X[:,5].tolist(),X[:,6].tolist())
+    
+def question5(valeur_propre,vecteur_propre):
+    print()
+    print(valeur_propre[:3])
+    print(vecteur_propre[:3])
 
+def question6(X,valeur_propre,vecteur_propre):
+    A = X.copy()
+    x = [[],[],[]]
+    for i in range(3):
+        x[i].append(np.dot(X,np.transpose(vecteur_propre[i])))
+    plt.scatter(x[0],x[1])
+    flg = plt.figure()
+    ax = flg.gca(projection = "3d")
+    ax.scatter(x[0],x[1],x[2])
 # main program starts here
 x = read()
 List_matrix = text_to_matrix(x)
 A = np.matrix(List_matrix[0])
 B = np.matrix(List_matrix[1])
 X = question2(A)
-X = question3(X)
+valeur_propre,vecteur_propre = question3(X)
+#question4(X,valeur_propre,vecteur_propre)
+question5(valeur_propre,vecteur_propre)
+question6(X,valeur_propre,vecteur_propre)
